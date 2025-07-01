@@ -1,0 +1,121 @@
+
+
+```{r}
+library(tidyverse)
+library(here)
+library(readxl)
+library(geonames)
+```
+
+```{r}
+options(
+  geonamesUsername = Sys.getenv("GEONAMES_USER")
+)
+```
+
+```{r}
+# Load data/CITIES_2020.xlsx
+cities <- readxl::read_excel(
+  here("data", "CITIES_2020.xlsx"),
+  range = "A6:C247",
+  col_names = c("city", "2010", "2020")
+)
+```
+
+Largest 50 cities
+```{r}
+top_50 <- cities |>
+  arrange(desc(`2020`)) |>
+  slice_head(n = 50)
+```
+
+
+```{r}
+top_50 <- top_50 |>
+  rowwise() |>
+  mutate(
+    geonames = list(
+      GNsearch(
+        name_equals = city,
+        country = "US",
+        adminCode1 = "OR",
+        featureClass = "P"
+      )
+    )
+  )
+```
+
+
+```{r}
+top_50 <- top_50 |>
+  mutate(results = nrow(geonames))
+```
+
+
+Cities with more than one result: 
+```{r}
+top_50 |>
+  filter(results > 1) |>
+  select(city, results)
+```
+
+Pick by hand:
+
+```{r}
+central_point <- top_50 |>
+  filter(city == "Central Point")
+# Non-zero population
+central_point$geonames <- list(central_point$geonames[[1]][1, ])
+```
+
+```{r}
+sandy <- top_50 |>
+  filter(city == "Sandy")
+# Closer match on name
+sandy$geonames <- list(sandy$geonames[[1]][1, ])
+```
+
+```{r}
+fairview <- top_50 |>
+  filter(city == "Fairview")
+# Non-zero population
+fairview$geonames <- list(fairview$geonames[[1]][1, ])
+```
+
+
+By hand, pick the one with the right geonameID
+```{r}
+top_50_one <- rows_update(top_50, bind_rows(central_point, sandy, fairview))
+```
+
+
+```{r}
+top_50_geo <- top_50_one |>
+  unnest(geonames) |>
+  mutate_at(
+    c("population", "lat", "lng"),
+    parse_number
+  )
+```
+
+Populations match pretty well between geonames and 2020 census data:
+```{r}
+top_50_geo |>
+  ggplot(aes(`2020`, population)) +
+  geom_point() +
+  scale_x_log10() +
+  scale_y_log10()
+```
+
+```{r}
+top_50_geo |>
+  ggplot(aes(lng, lat), label = city) +
+  geom_point()
+```
+
+
+```{r}
+top_50_geo |>
+  select(city, pop_2020 = `2020`, lat, lng, geonameId) |>
+  write_csv(here("data", "top_50_cities.csv"))
+```
