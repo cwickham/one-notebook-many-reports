@@ -9,6 +9,7 @@ library(prism)
 library(terra)
 library(tidyverse)
 library(here)
+download <- FALSE
 ```
 
 
@@ -17,27 +18,31 @@ months <- 1:12 |> set_names(month.abb)
 ```
 
 ```{r}
-prism_set_dl_dir(here("data", "prism"))
+prism_set_dl_dir(here("data-raw", "prism"))
 ```
 
 ## Download from PRISM archive
 ```{r}
-get_prism_normals(
-  type = "tmean",
-  resolution = "4km",
-  mon = 1:12,
-  keepZip = FALSE
-)
+if (download) {
+  get_prism_normals(
+    type = "tmean",
+    resolution = "4km",
+    mon = 1:12,
+    keepZip = FALSE
+  )
+}
 ```
 
 
 ```{r}
-get_prism_monthlys(
-  "tmean",
-  years = (2025 - 30):2025,
-  mon = 1:12,
-  keepZip = FALSE
-)
+if (download) {
+  get_prism_monthlys(
+    "tmean",
+    years = (2025 - 30):2025,
+    mon = 1:12,
+    keepZip = FALSE
+  )
+}
 ```
 
 ## Get raster stacks for monthly normals and monthly data
@@ -162,8 +167,19 @@ tmean_monthlies |>
 
 
 ```{r}
+tmean_normals <- tmean_normals |>
+  rename(tmean_normal = tmean)
+
 tmean_monthlies |>
-  write_csv(here("data", "tmean_monthly.csv"))
-tmean_normals |>
-  write_csv(here("data", "tmean_normals.csv"))
+  mutate(
+    month = month(date),
+    year = year(date)
+  ) |>
+  left_join(tmean_normals, by = c("city", "month")) |>
+  mutate(
+    tmean_diff = tmean - tmean_normal,
+    tmean_direction = ifelse(tmean_diff > 0, "warmer", "cooler"),
+    tmean_diff = abs(tmean_diff)
+  ) |>
+  write_csv(here("data", "tmean-oregon.csv"))
 ```

@@ -1,0 +1,52 @@
+---
+echo: false
+fig-width: 8
+fig-height: 3
+---
+
+# Corvallis, Oregon
+
+```{python}
+import polars as pl
+from plotnine import *
+from datetime import date
+from calendar import month_name, month_abbr
+```
+
+
+```{python}
+this_month = date(2025, 5, 1)
+highlight_color = "#FF5733" # A bright color for highlighting
+```
+
+```{python}
+tmean_oregon = pl.read_csv("data/tmean-oregon.csv", schema_overrides={"date": pl.Date})
+tmean = tmean_oregon.filter(
+    pl.col("city") == "Corvallis",
+)
+```
+
+
+```{python}
+this = tmean.filter(pl.col("date") == this_month).row(0, named=True)
+```
+
+
+`{python} month_name[this['month']]` `{python} this['year']`  was `{python} f"{abs(this['tmean_diff']):.1f}"`°C `{python} this['tmean_direction']` than usual.
+
+```{python}
+(
+    ggplot(tmean, aes(x="month", y="tmean"))
+    + geom_line(aes(group="year"), alpha=0.2)
+    + geom_line(aes(y = "tmean_normal"))
+    + geom_line(data=tmean.filter(pl.col("year") == 2025), color=highlight_color)
+    + geom_point(
+        data=tmean.filter(pl.col("date") == this_month), color=highlight_color
+    )
+    + scale_x_continuous(breaks=list(range(1, 13)), labels=list(month_abbr[1:]))
+    + labs(x="", y="Mean Temperature (°C)")
+    + theme_bw()
+)
+
+```
+

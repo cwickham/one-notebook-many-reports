@@ -16,7 +16,7 @@ options(
 ```{r}
 # Load data/CITIES_2020.xlsx
 cities <- readxl::read_excel(
-  here("data", "CITIES_2020.xlsx"),
+  here("data-raw", "CITIES_2020.xlsx"),
   range = "A6:C247",
   col_names = c("city", "2010", "2020")
 )
