@@ -49,6 +49,8 @@ tmean_monthly_normals <- prism_archive_subset(
   temp_period = "monthly normals",
   resolution = "4km"
 )
+pd_get_md(tmean_monthly_normals) |>
+  write_csv(here("data", "tmean_normals_metadata.csv"))
 tmean_monthly_normals <- pd_to_file(tmean_monthly_normals)
 tmean_monthly_normals_raster <- rast(tmean_monthly_normals)
 ```
@@ -60,6 +62,8 @@ tmean_monthly <- prism_archive_subset(
   years = (2025 - 30):2025,
   temp_period = "monthly"
 )
+pd_get_md(tmean_monthly) |>
+  write_csv(here("data", "tmean_monthly_metadata.csv"))
 tmean_monthly <- pd_to_file(tmean_monthly)
 tmean_monthly_raster <- rast(tmean_monthly)
 ```
