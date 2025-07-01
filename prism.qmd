@@ -40,7 +40,7 @@ get_prism_monthlys(
 )
 ```
 
-## Get monthly normals for a specific city
+## Get raster stacks for monthly normals and monthly data
 
 ```{r}
 tmean_monthly_normals <- prism_archive_subset(
@@ -50,24 +50,8 @@ tmean_monthly_normals <- prism_archive_subset(
   resolution = "4km"
 )
 tmean_monthly_normals <- pd_to_file(tmean_monthly_normals)
-```
-
-Repeat this for every city to get 30 year normals.
-```{r}
 tmean_monthly_normals_raster <- rast(tmean_monthly_normals)
-
-tmean <- terra::extract(
-  tmean_monthly_normals_raster,
-  matrix(c(-123.26, 44.56), nrow = 1)
-)
-
-corv_normals <- tibble(
-  month = months[str_sub(pd_get_name(tmean_monthly_normals), 1, 3)],
-  tmean = unlist(tmean)
-)
 ```
-
-
 
 ```{r}
 tmean_monthly <- prism_archive_subset(
@@ -77,27 +61,68 @@ tmean_monthly <- prism_archive_subset(
   temp_period = "monthly"
 )
 tmean_monthly <- pd_to_file(tmean_monthly)
-```
-
-Repeat this for every city to get 30 years of monthly mean temps.
-```{r}
-dates <- pd_get_date(tmean_monthly)
 tmean_monthly_raster <- rast(tmean_monthly)
+```
 
-corv_monthly <- tibble(
-  tmean = terra::extract(
-    tmean_monthly_raster,
-    matrix(c(-123.26, 44.56), nrow = 1)
-  ) |>
-    unlist(),
-  date = dates |> as.Date()
+## Extract for lat and lng of cities
+
+```{r}
+cities <- read_csv(here("data", "top_50_cities.csv"))
+cities_vec <- cities |>
+  select(city, lat, lng) |>
+  vect(geom = c("lng", "lat"), crs = "WGS84")
+```
+
+### Normals 
+
+```{r}
+tmean_normals <- terra::extract(
+  tmean_monthly_normals_raster,
+  cities_vec,
+  bind = TRUE
 )
+
+get_month <- function(x) {
+  months <- 1:12 |> set_names(month.abb)
+  x |> pd_get_name() |> str_sub(1, 3) |> months[i = _]
+}
+
+tmean_normals <-
+  tmean_normals |>
+  as_tibble() |>
+  pivot_longer(
+    cols = -city,
+    names_to = "month",
+    values_to = "tmean"
+  ) |>
+  mutate(month = get_month(month))
+```
+
+## Monthlies
+
+```{r}
+tmean_monthlies <- terra::extract(
+  tmean_monthly_raster,
+  cities_vec,
+  bind = TRUE
+)
+
+tmean_monthlies <-
+  tmean_monthlies |>
+  as_tibble() |>
+  pivot_longer(
+    cols = -city,
+    names_to = "date",
+    values_to = "tmean"
+  ) |>
+  mutate(date = pd_get_date(date) |> as.Date())
 ```
 
 
 
 ```{r}
-corv_normals |>
+tmean_normals |>
+  filter(city == "Corvallis") |>
   ggplot(aes(month, tmean)) +
   geom_point() +
   labs(
@@ -110,10 +135,16 @@ corv_normals |>
 
 
 ```{r}
-corv_monthly |>
+tmean_monthlies |>
+  filter(city == "Corvallis") |>
   ggplot(aes(month(date), tmean)) +
   geom_line(aes(group = year(date)), alpha = 0.2) +
-  geom_line(data = corv_monthly |> filter(year(date) == 2025), color = "red") +
+  geom_line(
+    data = tmean_monthlies |>
+      filter(city == "Corvallis") |>
+      filter(year(date) == 2025),
+    color = "red"
+  ) +
   scale_x_continuous(
     breaks = 1:12,
     labels = month.abb
@@ -123,4 +154,12 @@ corv_monthly |>
     y = "Mean Temperature (°C)"
   ) +
   theme_minimal()
+```
+
+
+```{r}
+tmean_monthlies |>
+  write_csv(here("data", "tmean_monthly.csv"))
+tmean_normals |>
+  write_csv(here("data", "tmean_normals.csv"))
 ```
