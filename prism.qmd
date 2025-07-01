@@ -1,0 +1,126 @@
+---
+title: "Untitled"
+format: html
+---
+
+
+```{r}
+library(prism)
+library(terra)
+library(tidyverse)
+library(here)
+```
+
+
+```{r}
+months <- 1:12 |> set_names(month.abb)
+```
+
+```{r}
+prism_set_dl_dir(here("data", "prism"))
+```
+
+## Download from PRISM archive
+```{r}
+get_prism_normals(
+  type = "tmean",
+  resolution = "4km",
+  mon = 1:12,
+  keepZip = FALSE
+)
+```
+
+
+```{r}
+get_prism_monthlys(
+  "tmean",
+  years = (2025 - 30):2025,
+  mon = 1:12,
+  keepZip = FALSE
+)
+```
+
+## Get monthly normals for a specific city
+
+```{r}
+tmean_monthly_normals <- prism_archive_subset(
+  "tmean",
+  mon = 1:12,
+  temp_period = "monthly normals",
+  resolution = "4km"
+)
+tmean_monthly_normals <- pd_to_file(tmean_monthly_normals)
+```
+
+Repeat this for every city to get 30 year normals.
+```{r}
+tmean_monthly_normals_raster <- rast(tmean_monthly_normals)
+
+tmean <- terra::extract(
+  tmean_monthly_normals_raster,
+  matrix(c(-123.26, 44.56), nrow = 1)
+)
+
+corv_normals <- tibble(
+  month = months[str_sub(pd_get_name(tmean_monthly_normals), 1, 3)],
+  tmean = unlist(tmean)
+)
+```
+
+
+
+```{r}
+tmean_monthly <- prism_archive_subset(
+  "tmean",
+  mon = 1:12,
+  years = (2025 - 30):2025,
+  temp_period = "monthly"
+)
+tmean_monthly <- pd_to_file(tmean_monthly)
+```
+
+Repeat this for every city to get 30 years of monthly mean temps.
+```{r}
+dates <- pd_get_date(tmean_monthly)
+tmean_monthly_raster <- rast(tmean_monthly)
+
+corv_monthly <- tibble(
+  tmean = terra::extract(
+    tmean_monthly_raster,
+    matrix(c(-123.26, 44.56), nrow = 1)
+  ) |>
+    unlist(),
+  date = dates |> as.Date()
+)
+```
+
+
+
+```{r}
+corv_normals |>
+  ggplot(aes(month, tmean)) +
+  geom_point() +
+  labs(
+    title = "Corvallis, OR Monthly Mean Temperature Normals",
+    x = "Month",
+    y = "Mean Temperature (°C)"
+  ) +
+  theme_minimal()
+```
+
+
+```{r}
+corv_monthly |>
+  ggplot(aes(month(date), tmean)) +
+  geom_line(aes(group = year(date)), alpha = 0.2) +
+  geom_line(data = corv_monthly |> filter(year(date) == 2025), color = "red") +
+  scale_x_continuous(
+    breaks = 1:12,
+    labels = month.abb
+  ) +
+  labs(
+    x = "",
+    y = "Mean Temperature (°C)"
+  ) +
+  theme_minimal()
+```
