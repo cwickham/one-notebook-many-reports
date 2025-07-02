@@ -6,6 +6,6 @@ Add city list along with filenames `data/cities.csv`
 
 
 ```{.bash}
-chmod +x gen-reports.sh
-./gen-reports.sh
+chmod +x gen-reports.py
+./gen-reports.py
 ```   

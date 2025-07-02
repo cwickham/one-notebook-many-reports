@@ -1,0 +1,32 @@
+color:
+  palette:
+    white: "#FFFFFF"
+    black: "#000000" 
+    forest-green: "#2d5a3d"     
+    sage-green: "#a8c68a"       
+    charcoal-grey: "#555555"    
+    light-grey: "#f5f5f5"
+    orange: "#ff6b35"
+  foreground: charcoal-grey    
+  background: white            
+  primary: forest-green       
+  secondary: orange      
+  tertiary: light-grey         
+typography:
+  fonts:
+    - family: Montserrat
+      source: google
+    - family: Open Sans
+      source: google
+  base:
+    family: Open Sans
+    weight: 400
+    line-height: 1.5
+  headings:
+    family: Montserrat
+    weight: 600
+    style: normal
+    line-height: 1.2
+    color: forest-green 
+logo:
+  medium: logo.png

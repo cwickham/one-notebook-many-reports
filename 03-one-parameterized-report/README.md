@@ -44,7 +44,7 @@ Markdown(f"# {city}")
 
 ## Identify the variable as a parameter
 
-Add `[parameter]` to `tags`
+Add `[parameters]` to `tags`
 
 ````
 ```{python}

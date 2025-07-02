@@ -1,5 +1,11 @@
 ---
-format: typst
+format: 
+  typst:
+    logo:
+      width: 1in
+      location: right-top
+      padding-right: 0.5in
+      padding-top: 0.25in
 echo: false
 jupyter: python3
 ---
@@ -20,11 +26,26 @@ import polars as pl
 from plotnine import *
 from datetime import date
 from calendar import month_name, month_abbr
+from brand_yml import Brand
+from pyfonts import load_google_font
+```
+
+```{python}
+brand = Brand.from_yaml("")
 ```
 
 ```{python}
 this_month = date(2025, 5, 1)
-highlight_color = "#FF5733" # A bright color for highlighting
+highlight_color = brand.color.secondary  # A bright color for highlighting
+brand_theme = theme(
+    text=element_text(
+        fontproperties=load_google_font(
+            brand.typography.base.family, brand.typography.base.weight
+        ),
+        color=brand.color.foreground,
+        size=14,
+    )
+)
 ```
 
 ```{python}
@@ -48,15 +69,16 @@ Markdown(f"{month_name[this['month']]} {this['year']} was {abs(this['tmean_diff'
 ```{python}
 (
     ggplot(tmean, aes(x="month", y="tmean"))
-    + geom_line(aes(group="year"), alpha=0.2)
-    + geom_line(aes(y = "tmean_normal"))
-    + geom_line(data=tmean.filter(pl.col("year") == 2025), color=highlight_color)
+    + geom_line(aes(group="year"), alpha=0.2, color=brand.color.primary)
+    + geom_line(aes(y = "tmean_normal"), color=brand.color.primary, size = 1)
+    + geom_line(data=tmean.filter(pl.col("year") == 2025), color=highlight_color, size = 1)
     + geom_point(
-        data=tmean.filter(pl.col("date") == this_month), color=highlight_color
+        data=tmean.filter(pl.col("date") == this_month), color=highlight_color, size = 2
     )
     + scale_x_continuous(breaks=list(range(1, 13)), labels=list(month_abbr[1:]))
-    + labs(title = f"{city}, OR", x="", y="Mean Temperature (°C)")
+    + labs(x="", y="Mean Temperature (°C)")
     + theme_bw() 
+    + brand_theme
     + theme(figure_size = (8, 4))
 )
 ```

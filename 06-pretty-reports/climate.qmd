@@ -1,0 +1,122 @@
+---
+format: 
+  typst:
+    margin:
+      top: 0in
+echo: false
+jupyter: python3
+filters:
+  - typst-function
+functions: 
+  - place
+  - block
+keep-typ: true
+---
+
+```{=typst}
+#set figure(numbering: none)
+#show figure.caption: set align(left)
+```
+
+```{python}
+#| tags: [parameters]
+
+city = "Corvallis"
+```
+
+::: {.block arguments='fill: {{< brand color primary >}}, width: 100%, height: 1.5in, outset: (x: 1.25in)'}
+
+```{=typst}
+#show heading.where(level: 1): set text(fill: white, size: 36pt)
+```
+
+::: {.place arguments='bottom + left, dy:-0.25in'}
+```{python}
+from IPython.display import Markdown
+Markdown(f"# {city}")
+```
+:::
+
+
+```{python}
+import polars as pl
+from plotnine import *
+from datetime import date
+from calendar import month_name, month_abbr
+from brand_yml import Brand
+from pyfonts import load_google_font
+from utils import oregon_map
+```
+
+```{python}
+brand = Brand.from_yaml("")
+```
+
+::: {.place arguments='bottom + right, dy:-0.1in'}
+
+```{python}
+oregon_map(
+    city,
+    figsize=(1.25, 1.25),
+    map_color="white",
+    point_color=brand.color.secondary,
+    background_color=brand.color.primary,
+)
+```    
+
+:::
+
+::: 
+
+
+```{python}
+this_month = date(2025, 5, 1)
+highlight_color = brand.color.secondary  # A bright color for highlighting
+brand_theme = theme(
+    text=element_text(
+        fontproperties=load_google_font(
+            brand.typography.base.family, brand.typography.base.weight
+        ),
+        color=brand.color.foreground,
+        size=14,
+    )
+)
+```
+
+
+```{python}
+tmean_oregon = pl.read_csv("data/tmean-oregon.csv", schema_overrides={"date": pl.Date})
+tmean = tmean_oregon.filter(
+    pl.col("city") == city,
+)
+```
+
+```{python}
+#| include: false
+
+tmean.head()
+```
+
+```{python}
+this = tmean.filter(pl.col("date") == this_month).row(0, named=True)
+Markdown(f"{month_name[this['month']]} {this['year']} was {abs(this['tmean_diff']):.1f}°C {this['tmean_direction']} than usual.")
+```
+
+```{python}
+#| fig-cap: "Mean temperatures over the last 30 years. This year is highlighted in orange. The heavy line indicates the 30-year normal."
+(
+    ggplot(tmean, aes(x="month", y="tmean"))
+    + geom_line(aes(group="year"), alpha=0.2, color=brand.color.primary)
+    + geom_line(aes(y = "tmean_normal"), color=brand.color.primary, size = 1)
+    + geom_line(data=tmean.filter(pl.col("year") == 2025), color=highlight_color, size = 1)
+    + geom_point(
+        data=tmean.filter(pl.col("date") == this_month), color=highlight_color, size = 2
+    )
+    + scale_x_continuous(breaks=list(range(1, 13)), labels=list(month_abbr[1:]))
+    + labs(x="", y="Mean Temperature (°C)")
+    + theme_bw() 
+    + brand_theme
+    + theme(figure_size = (8, 4))
+)
+```
+

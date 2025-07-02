@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: e6c09bf9-f15b-42f4-b025-ee1ce2ad78af
+      url: https://charlotte.quarto.pub/07-many-ipynbs
