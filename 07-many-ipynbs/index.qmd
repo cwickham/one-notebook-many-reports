@@ -1,0 +1,11 @@
+---
+title: Lots of Notebooks
+---
+
+
+```{.bash}
+chmod +x generate-reports.py
+./generate-reports.py
+quarto render
+quarto preview
+```
