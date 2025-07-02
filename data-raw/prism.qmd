@@ -181,5 +181,15 @@ tmean_monthlies |>
     tmean_direction = ifelse(tmean_diff > 0, "warmer", "cooler"),
     tmean_diff = abs(tmean_diff)
   ) |>
+  group_by(city) |>
+  arrange(city, desc(date)) |>
   write_csv(here("data", "tmean-oregon.csv"))
+```
+
+
+
+```{r}
+cities |> 
+  select(city) |>
+  write_csv(here("data", "cities.csv")) 
 ```

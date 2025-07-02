@@ -1,16 +1,19 @@
 # Data files in this directory
 
-## `CITIES_2020.xlsx`
-https://www.pdx.edu/population-research/census-data-oregon 
-Population by City, 2010, and 2020 (xlsx)
+See code to produce these files in the `data-raw` directory.
 
-## `top_50_cities.csv`
+## From `cities.qmd`
+
+### `top_50_cities.csv`
 
 `CITIES_2020.xlsx` filtered to top 50 cities based on `2020` population.
 
 `lat` and `lng` added from <https://www.geonames.org> via the [`geonames` R package](https://docs.ropensci.org/geonames/).
 
-## `tmean_monthly.csv` and `tmean_normals.csv`
+## From `prism.qmd`
+
+
+### `tmean_oregon.csv`
 
 Comes from [PRISM Group, Oregon State University](https://prism.oregonstate.edu/) 4km resolution monthly `tmean`, and 30-year monthly normal `tmean`, obtained via the [`prism` R package](https://docs.ropensci.org/prism/)
 
@@ -19,3 +22,11 @@ Data accessed Jul 1 2025. Additional metadata can be found in:
 * `tmean_monthly_metadata.csv`
 * `tmean_normals_metadata.csv`
 
+
+### `cities.csv`
+
+The `city` column only from `top_50_cities.csv` 
+
+## `oregon.geojson` 
+
+https://www2.census.gov/geo/tiger/GENZ2018/shp/cb_2018_us_state_20m.zip subsetted to Oregon and converted to GeoJSON using `geopandas` in Python.

@@ -119,3 +119,4 @@ top_50_geo |>
   select(city, pop_2020 = `2020`, lat, lng, geonameId) |>
   write_csv(here("data", "top_50_cities.csv"))
 ```
+
