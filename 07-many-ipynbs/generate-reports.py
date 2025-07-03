@@ -20,5 +20,6 @@ for row in cities.iter_rows(named=True):
   pm.execute_notebook(
      '_climate.ipynb',
     row["output_file"],
-    parameters=dict(city=row["city"])
+    parameters=dict(city=row["city"]),
+    prepare_only=True
   )

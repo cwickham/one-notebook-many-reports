@@ -4,3 +4,7 @@ project:
 website:
   sidebar: 
     contents: reports
+
+execute: 
+  enabled: true
+  
