@@ -1,5 +1,6 @@
 project:
   type: website
+  pre-render: generate-reports.py
 
 website:
   sidebar: 
