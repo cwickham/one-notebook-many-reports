@@ -1,17 +1,13 @@
 color:
   palette:
     white: "#FFFFFF"
-    black: "#000000" 
     forest-green: "#2d5a3d"     
-    sage-green: "#a8c68a"       
     charcoal-grey: "#555555"    
-    light-grey: "#f5f5f5"
     orange: "#ff6b35"
   foreground: charcoal-grey    
   background: white            
   primary: forest-green       
   secondary: orange      
-  tertiary: light-grey         
 typography:
   fonts:
     - family: Montserrat
