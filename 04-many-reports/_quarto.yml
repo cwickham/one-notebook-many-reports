@@ -1,3 +1,6 @@
 project:
   type: default
   output-dir: reports
+
+execute:
+  enable: true

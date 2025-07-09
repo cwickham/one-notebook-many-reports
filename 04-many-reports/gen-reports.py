@@ -1,26 +1,32 @@
 #!/usr/bin/env python
 
-from quarto import render 
+from quarto import render
 import polars as pl
 
-cities = pl.read_csv("data/cities.csv")
-cities = cities.with_columns([
-    pl.col("city")
-      .str.strip_chars()
-      .str.replace_all(" ", "_")
-      .str.to_lowercase()
-      .alias("filename")
-      ])
+cities = (
+    pl.read_csv("data/cities.csv")
+    .with_columns(
+        [
+            pl.col("city")
+            .str.strip_chars()
+            .str.replace_all(" ", "_")
+            .str.replace_all("\\.", "")
+            .str.to_lowercase()
+            .alias("filename")
+        ]
+    )
+    .with_columns(
+        (pl.col("filename") + pl.lit(".pdf")).alias(
+            "output_file"
+        )
+    )
+)
 
-cities = cities.with_columns([      
-  (pl.col("filename") + pl.lit(".pdf")).alias("output_file")
-])
-
-for row in cities.iter_rows(named=True):
-    # `render()` is just calling `quarto render` via `subprocess.run()`
+for city, output_file in zip(
+    cities["city"], cities["output_file"]
+):
     render(
         "climate.qmd",
-        execute_params={"city": row["city"]},
-        output_file=row["output_file"],
+        execute_params={"city": city},
+        output_file=output_file,
     )
-
