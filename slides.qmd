@@ -1,0 +1,620 @@
+---
+title: "From One Notebook to Many Reports: Automating with Quarto"
+author: "Charlotte Wickham"
+institute: "{{< iconify simple-icons:posit >}} Posit, PBC"
+format: 
+  revealjs:
+    width: 1920
+    height: 1080
+    code-line-numbers: false
+theme: [slides.scss]
+filters:
+  - highlight-text
+---
+
+## The Best and Worst Places to Grow Up: How Your Area Compares
+
+![](images/best-worst-places-to-grow-up.png){.nostretch width="1550px" fig-align="center"}
+
+:::aside
+<https://www.nytimes.com/interactive/2015/05/03/upshot/the-best-and-worst-places-to-grow-up-how-your-area-compares.html>
+:::
+
+## Washington State Soil Health Initiative: State of the Soils Assessment
+
+![](images/wsshi-farm150.png){.nostretch width="1400px" fig-align="center"}
+
+::: {.fragment .border .shadow .absolute top=750 left=1200 style="background-color: #ffffff; padding: 40px;"}
+Built with ![Quarto](images/quarto-logo.png){fig-alt="Quarto logo" style="vertical-align: middle;"}  
+by [Jadey Ryan](https://jadeyryan.com/)
+:::
+
+:::aside
+<https://washingtonsoilhealthinitiative.com/state-of-the-soils/>
+::: 
+
+
+## From One Notebook [to Many Reports]{.fragment .quarto-blue fragment-index=3"} [with ![Quarto](images/quarto-logo.png){style="vertical-align: middle;"}]{.fragment .quarto-blue fragment-index=7"}
+
+::: {.columns}
+
+::: {.column}
+::: {.border .fragment fragment-index=1 style="height: 800px; width: 750px; margin-top: 50px; overflow: hidden;"}
+
+![](images/corvallis-ipynb.png){.nostretch .tight fig-alt="The `corvallis.ipynb` notebook open in JupyterNotebook. Notebook contains the heading Corvallis, code cells, markdown output and a plot." width="750px"}
+::: 
+:::
+
+::: {.column}
+![](images/arrow.svg){.fragment fragment-index=2 .absolute top=400 left=800 fig-alt="Arrow pointing to the right" width="200px" height="200px"}
+
+![](images/corvallis-pretty-pdf.png){.fragment fragment-index=4 .border .absolute top=150 left=1000 fig-alt="The `corvallis.pdf` document rendered by Quarto. Document contains the heading Corvallis, markdown output and a plot." height="750px" } 
+
+![](images/portland-pretty-pdf.png){.fragment fragment-index=5 .border .absolute top=200 left=1050 fig-alt="The `portland.pdf` document rendered by Quarto. Document contains the heading Portland, markdown output and a plot." height="750px" } 
+
+![](images/eugene-pretty-pdf.png){.fragment fragment-index=6 .border .absolute top=250 left=1100 fig-alt="The `eugene.pdf` document rendered by Quarto. Document contains the heading Eugene, markdown output and a plot." height="750px" } 
+:::
+
+::: 
+
+# What is ![Quarto](images/quarto-logo.png){style="vertical-align: middle;"}?
+
+Quarto is an open-source, command line tool, built by Posit, to...
+
+## [Turn notebooks into HTML documents]{.fragment fragment-index=5"}
+
+::: {.terminal .big .center }
+`$` [`quarto`]{.fragment fragment-index=1} [`render`]{.fragment fragment-index=2} [`corvallis.ipynb`]{.fragment fragment-index=3} 
+:::
+
+
+[`corvallis.html`]{.big .fragment fragment-index=4}
+
+::: {.fragment fragment-index=4 .scroll-box}
+![](images/corvallis-render-html.png){.border .tight fig-alt="The `corvallis.ipynb` notebook rendered by Quarto. Document contains the heading Corvallis, markdown output and a plot."}
+:::
+
+## Turn notebooks into [Word]{colour="brand-color.dark-orange"} documents
+
+
+::: {.terminal .big .center }
+`$ quarto render corvallis.ipynb` [\--to docx]{colour="brand-color.orange"}
+:::
+
+[`corvallis.docx`]{.big}
+
+::: {.scroll-box}
+![](images/corvallis-render-docx.png){.border .tight fig-alt="The `corvallis.ipynb` notebook rendered by Quarto to `docx`.}
+:::
+
+## Turn notebooks into [PDF]{colour="brand-color.dark-orange"} documents
+
+::: {.terminal .big .center }
+`$ quarto render corvallis.ipynb` [\--to typst]{colour="brand-color.orange"}
+:::
+
+[`corvallis.pdf`]{.big}
+
+::: scroll-box
+![](images/corvallis-render-pdf.png){.border .tight fig-alt="The `corvallis.ipynb` notebook rendered by Quarto to `docx`. "}
+:::
+
+::: aside
+[Typst](https://typst.app/docs/) is a modern alternative to LaTeX.  
+Get a PDF via LaTeX with `to --pdf`
+::: 
+
+
+## Set document options in a header 
+
+::: {.columns}
+
+::: {.column}
+Raw cell at the top of the notebook:
+
+```{.yaml .notebook-cell}
+---
+# Options for rendering the document
+---
+```
+
+:::
+::: {.column}
+:::
+::: 
+
+## Set document options in a header 
+
+::: {.columns}
+
+::: {.column}
+Raw cell at the top of the notebook:
+
+```{.yaml .notebook-cell}
+---
+format: typst
+---
+```
+
+\
+
+```{.default}
+quarto render corvallis.ipynb 
+```
+
+:::
+::: {.column}
+`corvallis.pdf`
+
+![](images/corvallis-render-pdf.png){.border .tight fig-alt="The `corvallis.ipynb` notebook rendered by Quarto to `docx`. " width="750px"}
+:::
+::: 
+
+
+## Set document options in a header 
+
+::: {.columns}
+
+::: {.column}
+Raw cell at the top of the notebook:
+
+```{.yaml .notebook-cell}
+---
+format: typst
+echo: false 
+---
+```
+\
+
+```{.default}
+quarto render corvallis.ipynb 
+```
+
+:::
+::: {.column}
+![](images/corvallis-echo-false.png){.border fig-alt="The `corvallis.ipynb` notebook rendered with `echo: false`. There are no code cells shown in the rendered document." width="750px"}
+:::
+::: 
+
+::: aside
+Document options: <https://quarto.org/docs/reference/formats/typst.html>
+:::
+
+## Set code cell options as `#|` comments
+
+::: {.columns}
+::: {.column}
+E.g. `#| include: false` to hide the code and output:
+![](images/corvallis-ipynb-code-cell.png){.border fig-alt="The `corvallis.ipynb` notebook with a code cell that has `#| include: false` in the first line." width="750px"}
+:::
+::: {.column}
+![](images/corvallis-include-false.png){.border fig-alt="The `corvallis.ipynb` notebook rendered with `#| include: false`. There is no output from the cell that produced the `head` of the data." width="750px"}
+:::
+::: 
+
+::: aside
+Code cell options: <https://quarto.org/docs/reference/cells/cells-jupyter.html>
+::: 
+
+## Quarto is ... {.center}
+
+[A way to avoid copy-and-pasting into a Word document]{.r-fit-text}
+
+
+# Parameterized reports in Quarto
+
+## Roadmap to parameterized reports
+
+Start with a notebook that works for one city:
+
+1. Turn hardcoded value (`"Corvallis"`) into a variable (`city`)
+
+2. Make the variable a parameter 
+
+3. Render with a different parameter value (`city = "Portland"`)
+
+4. Automate rendering for all cities 
+
+
+## 1. Turn hardcoded value into a variable
+
+::: {.columns}
+::: {.column}
+
+`corvallis.ipynb`
+
+::: {style="width: 90%;"}
+\
+
+\
+
+```{.markdown  .notebook-cell}
+# Corvallis
+```
+
+\
+
+```{.python  .notebook-cell}
+tmean = tmean_oregon.filter(
+    pl.col("city") == "Corvallis",
+)
+```
+
+\
+
+```{.python .notebook-cell}
+...
++ labs(title = "Corvallis, OR", ...)
+...
+```
+:::
+:::
+::: {.column}
+ [`climate.ipynb`]{.fragment}
+
+:::fragment
+```{.python  .notebook-cell}
+city = "Corvallis"
+```
+:::
+
+\
+
+:::fragment
+```{.python  .notebook-cell}
+Markdown(f"# {city}")
+```
+:::
+
+\
+
+:::fragment
+```{.python .notebook-cell}
+tmean = tmean_oregon.filter(
+    pl.col("city") == city,
+)
+```
+:::
+
+\
+
+:::fragment
+```{.python  .notebook-cell }
+...
++ labs(title = f"{city}, OR", ...)
+...
+```
+:::
+
+:::
+::: 
+
+
+## 2. Make the variable a parameter 
+
+Add the tag `parameters` to the code cell:
+
+![](images/corvallis-add-tag.png){.border fig-alt="The `corvallis.ipynb` notebook with the code cell that contains the `city` variable highlighted. The tag `parameters` is added to the cell."}
+
+::: aside
+Powered by Papermill: <https://papermill.readthedocs.io/en/latest/usage-parameterize.html>
+::: 
+
+## 3. Render with a different parameter value 
+
+```{.default}
+quarto render climate.ipynb
+```
+
+`climate.pdf`
+
+:::{style="height: 800px; overflow: clip;"}
+![](images/corvallis-pdf.png){.border }
+:::
+
+## 3. Render with a different parameter value 
+
+```{.default}
+quarto render climate.ipynb -P city:Portland 
+```
+
+`climate.pdf`
+
+:::{style="height: 800px; overflow: clip;"}
+![](images/portland-render-pdf.png){.border }
+:::
+
+## 3. Render with a different parameter value 
+
+```{.default}
+quarto render climate.ipynb -P city:Portland --output-file portland.pdf
+```
+
+`portland.pdf`
+
+:::{style="height: 800px; overflow: clip;"}
+![](images/portland-render-pdf.png){.border }
+:::
+
+::: aside
+Safer to move files afterwards with HTML outputs
+:::
+
+## 4. Automate rendering for all cities 
+
+::: {.columns}
+::: {.column}
+`cities`:
+
+| `city`      | `output_file`   |
+|-------------|---------------|
+| Portland  | portland.pdf  |
+| Cottage Grove   | cottage_grove.pdf    |
+| St. Helens     | st_helens.pdf     |
+| ...   | ...  |
+:::
+::: {.column}
+`gen-reports.py`:
+```{.python}
+for city, output_file in zip(
+    cities["city"], cities["output_file"]
+):
+    # render() runs `quarto render` 
+    # via subprocess.run()
+    render(
+        "climate.qmd",
+        execute_params={"city": city},
+        output_file=output_file,
+    )
+```   
+:::
+::: 
+
+## From One Notebook to Many Reports with Quarto
+
+::: {.columns}
+
+::: {.column}
+::: {.border style="height: 800px; width: 750px; margin-top: 50px; overflow: hidden;"}
+
+![](images/corvallis-ipynb.png){.nostretch .tight fig-alt="The `corvallis.ipynb` notebook open in JupyterNotebook. Notebook contains the heading Corvallis, code cells, markdown output and a plot." width="750px"}
+::: 
+:::
+
+::: {.column}
+![](images/arrow.svg){.absolute top=400 left=800 fig-alt="Arrow pointing to the right" width="200px" height="200px"}
+
+![](images/corvallis-pdf.png){.border .absolute top=150 left=1000 fig-alt="The `corvallis.pdf` document rendered by Quarto. Document contains the heading Corvallis, markdown output and a plot." height="750px" } 
+
+![](images/portland-pdf.png){.border .absolute top=200 left=1050 fig-alt="The `portland.pdf` document rendered by Quarto. Document contains the heading Portland, markdown output and a plot." height="750px" } 
+
+![](images/eugene-pdf.png){.border .absolute top=250 left=1100 fig-alt="The `eugene.pdf` document rendered by Quarto. Document contains the heading Eugene, markdown output and a plot." height="750px" } 
+:::
+
+::: 
+
+# Making Pretty Reports 
+
+## Add brand with Brand.yml
+
+```{.yaml filename="_brand.yml"}
+{{< include 05-branded-reports/_brand.yml >}}
+```
+
+::: aside
+<https://posit-dev.github.io/brand-yml/>
+::: 
+
+## Quarto will detect `_brand.yml` 
+
+::: {.columns}
+::: {.column}
+More control over logo with options:
+```{.yaml .notebook-cell}
+---
+format: 
+  typst:
+    logo:
+      width: 1in
+      location: right-top
+---
+```
+
+Use [`brand-yml` package](https://posit-dev.github.io/brand-yml/pkg/py/) to set brand elements in your code:
+
+
+```{.python  .notebook-cell}
+from brand_yml import Brand
+brand = Brand.from_yaml("")
+highlight_color = brand.color.secondary
+```
+:::
+::: {.column}
+![](images/corvallis-branded.png){}
+:::
+:::
+
+## Typst: include raw Typst code
+
+Write Typst code in a raw cell with `` ```{=typst} `` syntax
+
+E.g. `set` or `show` rules to set defaults:
+
+````{.markdown  .notebook-cell}
+```{=typst}
+#set figure(numbering: none)
+#show figure.caption: set align(left)
+```
+````
+
+## Typst: wrap elements in Typst functions
+
+Add the [typst-function](https://github.com/christopherkenny/typst-function/tree/main) Quarto extension.
+
+::: {.columns}
+::: {.column width="60%"}
+Wrap content in fenced divs:
+
+````{.markdown  .notebook-cell .code-overflow-wrap}
+::: {.place arguments='bottom + left, dy:-0.25in'}
+````
+\
+```{.python .notebook-cell}
+oregon_map(...)
+```
+\
+````{.markdown  .notebook-cell}
+:::
+````
+:::
+::: {.column width="40%"}
+```{.typst}
+#place(bottom + left, dy:-0.25in)[
+  // output from `oregon_map(..)`
+]
+```
+:::
+:::
+
+## Brand + Typst = Pretty PDFs
+
+<https://github.com/cwickham/scipy-talk/tree/main/06-pretty-reports>
+
+![](images/corvallis-pretty-pdf.png){}
+
+# Quarto for parameterized reports
+
+## Advantages 
+
+* Manage one notebook 
+
+* Render to one or many formats 
+
+* "You do you" automation
+
+## ... so much more
+
+* Tables, e.g. [`great_tables`](https://posit-dev.github.io/great-tables/articles/intro.html), work great too
+
+* Include other `.md` files with the `{{{< include >}}}` shortcode
+
+* Rearrange content with the `{{{< contents >}}}` shortcode
+
+* Show content conditional on `format`, e.g. interactive plot for HTML, static plot for PDF
+
+* Consider [Quarto's plain text format](#qmd) (`*.qmd`)--- 
+  easier version control, copy-paste examples
+
+## PDF Accessibility
+
+:::: {.columns}
+::: {.column}
+Neither `format: typst` nor `format: pdf` produced tagged PDFs 
+
+[European accessibility act](https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/disability/union-equality-strategy-rights-persons-disabilities-2021-2030/european-accessibility-act_en)
+
+USA [ADA 2024 web rule](https://www.ada.gov/resources/2024-03-08-web-rule/) for State and Local Governments
+:::
+::: {.column}
+
+Possible solutions:
+
+* Use `format: docx` then use Word's tool to export to PDF
+
+* Don't use PDF. Use `format: html`. Quarto >v1.8 websites pass `axe-core` checks by default.
+
+
+:::
+::: 
+
+
+## Thank you
+
+* Quarto docs: [Get Quarto](https://quarto.org/docs/get-started/), [Quarto: Parameters](https://quarto.org/docs/computations/parameters.html)
+
+* Examples at <https://github.com/cwickham/one-notebook-many-reports>
+
+* Ask Quarto questions at <https://github.com/quarto-dev/quarto-cli/discussions>
+
+* Ask me at <charlotte.wickham@posit.co>
+
+
+## Consider using the Quarto document format `*.qmd` {#qmd}
+
+::: {.columns}
+::: {.column}
+```{.default}
+quarto convert corvallis.ipynb 
+```
+
+*   Plain text, easier version control, copy-paste examples
+*   No output from cells in file, forced reproducibility
+*   Header and markdown unadorned
+*   Code cells inside `{python}` code blocks:
+
+    ````markdown
+    ```{{python}}
+    
+    ```
+    ````
+
+:::
+::: {.column}
+`corvallis.qmd`
+````markdown
+---
+format: typst
+echo: false
+title: Corvallis
+jupyter: python3
+---
+
+```{{python}}
+import polars as pl
+from plotnine import *
+from datetime import date
+from calendar import month_name, month_abbr
+from IPython.display import Markdown
+```
+
+```{{python}}
+this_month = date(2025, 5, 1)
+highlight_color = "#FF5733" 
+```
+
+```{{python}}
+tmean_oregon = pl.read_csv("data/tmean-oregon.csv", schema_overrides={"date": pl.Date})
+tmean = tmean_oregon.filter(
+    pl.col("city") == "Corvallis",
+)
+```
+
+```{{python}}
+#| include: false
+tmean.head()
+```
+
+```{{python}}
+this = tmean.filter(pl.col("date") == this_month).row(0, named=True)
+Markdown(f"{month_name[this['month']]} {this['year']} was {abs(this['tmean_diff']):.1f}°C {this['tmean_direction']} than usual.")
+```
+
+```{{python}}
+(
+    ggplot(tmean, aes(x="month", y="tmean"))
+    + geom_line(aes(group="year"), alpha=0.2)
+    + geom_line(aes(y = "tmean_normal"))
+    + geom_line(data=tmean.filter(pl.col("year") == 2025), color=highlight_color)
+    + geom_point(
+        data=tmean.filter(pl.col("date") == this_month), color=highlight_color
+    )
+    + scale_x_continuous(breaks=list(range(1, 13)), labels=list(month_abbr[1:]))
+    + labs(title = "Corvallis, OR", x="", y="Mean Temperature (°C)")
+    + theme_bw() 
+    + theme(figure_size = (8, 4))
+)
+```
+````
+:::
+::: 
+

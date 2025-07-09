@@ -1,0 +1,56 @@
+/*-- scss:defaults --*/
+
+/*-- scss:rules --*/
+.border {
+  border: 2px solid #ccc;
+}
+
+.shadow {
+  box-shadow: 10px 10px 10px darkgrey;
+}
+
+.terminal {
+  font-family: $font-family-monospace;
+  background-color:#1E293B;
+  color: $brand-pale-blue-grey;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 50pt;
+}
+
+.terminal code {
+  color: $brand-pale-blue-grey;
+}
+
+.big {
+  font-size: 1.5em;
+}
+
+.scroll-box {
+  height: 600px; 
+  overflow: scroll;
+}
+
+.reveal .scroll {
+  overflow: scroll;
+}
+
+.reveal img {
+  max-width: 100%;
+  max-height: 100%;  
+}
+
+
+.tight {
+  padding: 0px;
+  margin: 0;
+}
+
+.reveal pre {
+  font-size: 0.9em;
+}
+
+div.sourceCode .notebook-cell {
+  background-color: #f5f5f5;
+}
+
