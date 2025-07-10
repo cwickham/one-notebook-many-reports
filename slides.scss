@@ -1,6 +1,10 @@
 /*-- scss:defaults --*/
 
 /*-- scss:rules --*/
+.hide-me {
+  visibility: hidden;
+}
+
 .border {
   border: 2px solid #ccc;
 }
@@ -11,7 +15,7 @@
 
 .terminal {
   font-family: $font-family-monospace;
-  background-color:#1E293B;
+  background-color: $brand-darker;
   color: $brand-pale-blue-grey;
   padding: 10px;
   border-radius: 5px;
@@ -54,3 +58,10 @@ div.sourceCode .notebook-cell {
   background-color: #f5f5f5;
 }
 
+.reveal .quarto-title-block .quarto-title-authors .quarto-title-author .quarto-title-affiliation {
+  font-size: 1.5em;
+}
+
+.reveal .quarto-title-block .quarto-title-author-name  {
+  font-size: 2em;
+}

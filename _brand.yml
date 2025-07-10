@@ -1,0 +1,25 @@
+color:
+  palette:
+    quarto-blue: "#39729E"
+    light-blue: "#E3F2FD"
+    dark-orange: "#b2672d"
+    orange: "#d37a35"
+    pale-blue-grey: "#F5F7FA"
+    dark: "#2C3E50"
+    darker: "#1E293B"
+  foreground: dark 
+  primary: quarto-blue
+typography:
+  fonts:
+    - family: Outfit
+      source: google
+    - family: Source Code Pro
+      source: google
+  base:
+    family: Outfit
+  headings:
+    family: Outfit
+    color: quarto-blue
+  monospace:
+    family: Source Code Pro
+    color: dark-orange
