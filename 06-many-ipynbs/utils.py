@@ -3,12 +3,21 @@ import polars as pl
 import matplotlib.pyplot as plt
 from pyhere import here
 
-def oregon_map(city, figsize=(12, 8), map_color='lightgrey', point_color='red', background_color='white'):
+
+def oregon_map(
+    city,
+    figsize=(12, 8),
+    map_color="lightgrey",
+    point_color="red",
+    background_color="white",
+):
     oregon = gpd.read_file(here("data", "oregon.geojson"))
-    cities = pl.read_csv(here('data', 'cities.csv'))
-    
-    this_city = cities.filter(pl.col('city') == city).select(['lng', 'lat'])
-    point = gpd.GeoDataFrame(geometry=gpd.points_from_xy(this_city['lng'], this_city['lat']), crs='WGS84')
+    cities = pl.read_csv(here("data", "cities.csv"))
+
+    this_city = cities.filter(pl.col("city") == city).select(["lng", "lat"])
+    point = gpd.GeoDataFrame(
+        geometry=gpd.points_from_xy(this_city["lng"], this_city["lat"]), crs="WGS84"
+    )
 
     fig, ax = plt.subplots(figsize=figsize)
     fig.patch.set_facecolor(background_color)
