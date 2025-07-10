@@ -96,7 +96,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="slides_files/libs/revealjs/dist/theme/quarto-bf2f2a3c20222410bc7e6d1123e238a2.css">
+  <link rel="stylesheet" href="slides_files/libs/revealjs/dist/theme/quarto-83739db2628bfefc1a34fb4267aca254.css">
   <link href="slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -198,7 +198,7 @@
 <section id="from-one-notebook-to-many-reports-automating-with-quarto" class="title-slide slide level1 center">
 <h1>From One Notebook to Many Reports: Automating with Quarto</h1>
 <p>&nbsp;</p>
-<p><span class="big">Charlotte Wickham</span></p>
+<p><span class="big">Charlotte Wickham</span> <a href="https://www.linkedin.com/in/cvwickham/"><iconify-icon role="img" inline="" icon="fa6-brands:linkedin" aria-label="Icon linkedin from fa6-brands Iconify.design set." title="Icon linkedin from fa6-brands Iconify.design set."></iconify-icon> cvwickham</a></p>
 <p><span class="big"><iconify-icon role="img" inline="" icon="simple-icons:posit" aria-label="Icon posit from simple-icons Iconify.design set." title="Icon posit from simple-icons Iconify.design set."></iconify-icon> Posit, PBC</span></p>
 <div class="absolute" style="bottom: 0px; right: 0px; ">
 <div id="" class="qrcode"></div>
@@ -386,13 +386,23 @@ Get a PDF via LaTeX with <code>to --pdf</code></p>
 <h2>Quarto is …</h2>
 <p><span class="r-fit-text">A way to avoid copy-and-pasting into a Word document</span></p>
 </section>
-<section id="quarto-is-so-much-more" class="slide level2">
-<h2>Quarto is so much more …</h2>
-<ul>
-<li>Presentations</li>
-<li>Websites</li>
-<li>Books</li>
-</ul>
+<section id="and-morewebsites" class="slide level2">
+<h2>And more…websites</h2>
+
+<img data-src="images/nbdev-website.png" class="border r-stretch" alt="Screenshot of the nbdev website, which is a Quarto website and builds Quarto doc sites."></section>
+<section id="and-morebooks" class="slide level2">
+<h2>And more…books</h2>
+
+<img data-src="images/python-for-data-analysis.png" class="border r-stretch" alt="Screenshot of the book Python for Data Analysis, which is a Quarto book."></section>
+<section id="and-morepresentations" class="slide level2">
+<h2>And more…presentations</h2>
+
+<img data-src="images/this-presentation.png" class="border r-stretch" alt="Screenshot of this presentation, which is a Quarto presentation."></section>
+<section id="and-morepublishing" class="slide level2">
+<h2>And more…publishing</h2>
+<div class="terminal big">
+<p>quarto publish slides.qmd github-pages</p>
+</div>
 </section></section>
 <section>
 <section id="parameterized-reports-in-quarto" class="title-slide slide level1 center">
@@ -499,7 +509,9 @@ Get a PDF via LaTeX with <code>to --pdf</code></p>
 </div>
 
 <aside><div>
-<p>Safer to move files afterwards with HTML outputs</p>
+<div style="background-color: #ffffff;">
+<p>For <code>format: html</code> move file and supporting folder on your own</p>
+</div>
 </div></aside></section>
 <section id="automate-rendering-for-all-cities" class="slide level2">
 <h2>4. Automate rendering for all cities</h2>
@@ -532,7 +544,7 @@ Get a PDF via LaTeX with <code>to --pdf</code></p>
 </tr>
 </tbody>
 </table>
-</div><div class="column">
+</div><div class="column fragment">
 <p><code>gen-reports.py</code>:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> quarto <span class="im">import</span> render</span>
 <span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -661,23 +673,28 @@ Get a PDF via LaTeX with <code>to --pdf</code></p>
 <h1>Quarto for parameterized reports</h1>
 
 </section>
-<section id="advantages" class="slide level2">
-<h2>Advantages</h2>
+<section id="section-1" class="slide level2">
+<h2></h2>
+<div class="r-fit-text">
+<p><span class="light-content" style="color: #39729E;"><strong>Advantages</strong></span></p>
 <ul>
 <li><p>Manage one notebook</p></li>
 <li><p>Render to one or many formats</p></li>
 <li><p>“You do you” automation</p></li>
 </ul>
+</div>
 </section>
 <section id="so-much-more" class="slide level2">
 <h2>… so much more</h2>
+<div class="r-fit-text">
 <ul>
-<li><p>Tables, e.g.&nbsp;<a href="https://posit-dev.github.io/great-tables/articles/intro.html"><code>great_tables</code></a>, work great too</p></li>
-<li><p>Include other <code>.md</code> files with the <code>{{&lt; include &gt;}}</code> shortcode</p></li>
-<li><p>Rearrange content with the <code>{{&lt; contents &gt;}}</code> shortcode</p></li>
-<li><p>Show content conditional on <code>format</code>, e.g.&nbsp;interactive plot for HTML, static plot for PDF</p></li>
+<li><p><a href="https://quarto.org/docs/authoring/tables.html">Tables</a>, e.g.&nbsp;<a href="https://posit-dev.github.io/great-tables/articles/intro.html"><code>great_tables</code></a>, work great too</p></li>
+<li><p>Include other <code>.md</code> files with the <a href="https://quarto.org/docs/authoring/includes.html"><code>{{&lt; include &gt;}}</code> shortcode</a></p></li>
+<li><p>Rearrange content with the <a href="https://quarto.org/docs/authoring/contents.html"><code>{{&lt; contents &gt;}}</code> shortcode</a></p></li>
+<li><p>Show <a href="https://quarto.org/docs/authoring/conditional.html">content conditional on <code>format</code></a>, e.g.&nbsp;interactive plot for HTML, static plot for PDF</p></li>
 <li><p>Consider <a href="#/qmd">Quarto’s plain text format</a> (<code>*.qmd</code>)— easier version control, copy-paste examples</p></li>
 </ul>
+</div>
 </section></section>
 <section id="thank-you" class="title-slide slide level1 center">
 <h1><span class="r-fit-text">Thank you</span></h1>
