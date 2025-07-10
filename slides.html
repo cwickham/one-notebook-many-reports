@@ -548,16 +548,14 @@ Get a PDF via LaTeX with <code>to --pdf</code></p>
 <p><code>gen-reports.py</code>:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> quarto <span class="im">import</span> render</span>
 <span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> city, output_file <span class="kw">in</span> <span class="bu">zip</span>(</span>
-<span id="cb14-4"><a href="" aria-hidden="true" tabindex="-1"></a>    cities[<span class="st">"city"</span>], cities[<span class="st">"output_file"</span>]</span>
-<span id="cb14-5"><a href="" aria-hidden="true" tabindex="-1"></a>):</span>
-<span id="cb14-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># render() runs `quarto render` </span></span>
-<span id="cb14-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># via subprocess.run()</span></span>
-<span id="cb14-8"><a href="" aria-hidden="true" tabindex="-1"></a>    render(</span>
-<span id="cb14-9"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"climate.ipynb"</span>,</span>
-<span id="cb14-10"><a href="" aria-hidden="true" tabindex="-1"></a>        execute_params<span class="op">=</span>{<span class="st">"city"</span>: city},</span>
-<span id="cb14-11"><a href="" aria-hidden="true" tabindex="-1"></a>        output_file<span class="op">=</span>output_file,</span>
-<span id="cb14-12"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> cities.iter_rows(named<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb14-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># render() runs `quarto render` </span></span>
+<span id="cb14-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># via subprocess.run()</span></span>
+<span id="cb14-6"><a href="" aria-hidden="true" tabindex="-1"></a>    render(</span>
+<span id="cb14-7"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"climate.ipynb"</span>,</span>
+<span id="cb14-8"><a href="" aria-hidden="true" tabindex="-1"></a>        execute_params<span class="op">=</span>{<span class="st">"city"</span>: row[<span class="st">"city"</span>]},</span>
+<span id="cb14-9"><a href="" aria-hidden="true" tabindex="-1"></a>        output_file<span class="op">=</span>row[<span class="st">"output_file"</span>],</span>
+<span id="cb14-10"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 </section>
 <section id="from-one-notebook-to-many-reports-with-quarto-1" class="slide level2">
