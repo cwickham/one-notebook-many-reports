@@ -1,5 +1,3 @@
-Starting from `03-one-parameterized-report`
-
 To generate the all 50 reports:
 
 ```{.bash}

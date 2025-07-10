@@ -3,4 +3,4 @@ project:
   output-dir: reports
 
 execute:
-  enable: true
+  enabled: true

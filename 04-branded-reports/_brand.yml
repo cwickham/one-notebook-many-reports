@@ -17,12 +17,9 @@ typography:
   base:
     family: Open Sans
     weight: 400
-    line-height: 1.5
   headings:
     family: Montserrat
     weight: 600
-    style: normal
-    line-height: 1.2
     color: forest-green 
 logo:
   medium: logo.png

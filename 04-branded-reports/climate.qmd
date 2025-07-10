@@ -4,8 +4,6 @@ format:
     logo:
       width: 1in
       location: right-top
-      padding-right: 0.5in
-      padding-top: 0.25in
 echo: false
 jupyter: python3
 ---
