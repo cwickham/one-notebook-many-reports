@@ -288,16 +288,12 @@
 )
 #let brand-color = (
   background: rgb("#ffffff"),
-  black: rgb("#000000"),
   charcoal-grey: rgb("#555555"),
   foreground: rgb("#555555"),
   forest-green: rgb("#2d5a3d"),
-  light-grey: rgb("#f5f5f5"),
   orange: rgb("#ff6b35"),
   primary: rgb("#2d5a3d"),
-  sage-green: rgb("#a8c68a"),
   secondary: rgb("#ff6b35"),
-  tertiary: rgb("#f5f5f5"),
   white: rgb("#ffffff")
 )
 #set page(fill: brand-color.background)
@@ -306,16 +302,12 @@
 #set line(stroke: (paint: brand-color.foreground))
 #let brand-color-background = (
   background: color.mix((brand-color.background, 15%), (brand-color.background, 85%)),
-  black: color.mix((brand-color.black, 15%), (brand-color.background, 85%)),
   charcoal-grey: color.mix((brand-color.charcoal-grey, 15%), (brand-color.background, 85%)),
   foreground: color.mix((brand-color.foreground, 15%), (brand-color.background, 85%)),
   forest-green: color.mix((brand-color.forest-green, 15%), (brand-color.background, 85%)),
-  light-grey: color.mix((brand-color.light-grey, 15%), (brand-color.background, 85%)),
   orange: color.mix((brand-color.orange, 15%), (brand-color.background, 85%)),
   primary: color.mix((brand-color.primary, 15%), (brand-color.background, 85%)),
-  sage-green: color.mix((brand-color.sage-green, 15%), (brand-color.background, 85%)),
   secondary: color.mix((brand-color.secondary, 15%), (brand-color.background, 85%)),
-  tertiary: color.mix((brand-color.tertiary, 15%), (brand-color.background, 85%)),
   white: color.mix((brand-color.white, 15%), (brand-color.background, 85%))
 )
 #set text(weight: 400, )
@@ -339,18 +331,18 @@
 #block(fill: rgb("#2d5a3d"), width: 100%, height: 1.5in, outset: (x: 1.25in))[
 #show heading.where(level: 1): set text(fill: white, size: 36pt)
 #place(bottom + left, dy:-0.25in)[
-= Corvallis
-<corvallis>
+= Gresham
+<gresham>
 ]
 #place(bottom + right, dy:-0.1in)[
-#box(image("climate_files/figure-typst/cell-6-output-1.svg"))
+#box(image("climate_files/figure-typst/cell-7-output-1.svg"))
 
 ]
 ]
-May 2025 was 0.1°C cooler than usual.
+May 2025 was 0.0°C cooler than usual.
 
 #figure([
-#box(image("climate_files/figure-typst/cell-11-output-1.svg"))
+#box(image("climate_files/figure-typst/cell-12-output-1.svg"))
 ], caption: figure.caption(
 position: bottom, 
 [
