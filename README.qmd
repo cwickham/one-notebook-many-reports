@@ -1,0 +1,21 @@
+---
+format: gfm
+---
+
+
+## Abstract
+
+{{< include "abstract.md" >}}
+
+## Examples
+
+The subfolders contain examples for each section of the talk
+
+## Requirements
+
+For running the examples, you need to install the following Python packages (e.g. in a virtual environment with `uv`):
+
+```
+uv venv
+uv pip install quarto-cli jupyter polars plotnine pyarrow papermill quarto brand_yml pyfonts geopandas pyhere 
+```
